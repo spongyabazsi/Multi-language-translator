@@ -10,7 +10,7 @@ This dictionary also includes speech synthesis, so if you are unsure about the p
 
 Open the solution file, run the program, enjoy.
 
-![img2](https://imgur.com/ypa0gMJ)
+![asd](https://i.imgur.com/ypa0gMJ.png)
 
 
 *Speech synthesis works with languages that you have voices to in your OS*
