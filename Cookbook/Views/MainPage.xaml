@@ -1,0 +1,93 @@
+<Page x:Class="Cookbook.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:Cookbook.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:Cookbook.ViewModels"
+      xmlns:x1="using:System"
+      xmlns:c="using:Template10.Controls"
+      xmlns:converters="using:Cookbook.Converter"
+      xmlns:services="using:Cookbook.Services"
+      mc:Ignorable="d" Height="665" Width="639">
+
+    <Page.DataContext>
+        <vm:MainPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+    <Page.Resources>
+        <converters:ModeToBooleanConverter x:Key="modetovis"/>
+        <converters:BooleanToVisibilityConverter x:Key="booltovis"/>
+        <converters:BooleanToVisibilityConverter x:Key="bool2visInverse" OnTrue="Collapsed" OnFalse="Visible"/>
+    </Page.Resources>
+    <Page.TopAppBar>
+        <CommandBar>
+            <AppBarButton Label="Filter" Icon="Filter" AllowFocusOnInteraction="True">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel Orientation="Vertical" Spacing="9">
+                            <TextBlock Text="Input language:"></TextBlock>
+                            <ComboBox PlaceholderText="From" HorizontalAlignment="Center"  VerticalAlignment="Top" ItemsSource="{Binding fromlangs}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+                            <TextBlock  Visibility="{Binding SelectedItemfuncs,Converter={StaticResource modetovis}}" Text="Output language:"></TextBlock>
+                            <ComboBox PlaceholderText="To" HorizontalAlignment="Center" Visibility="{Binding SelectedItemfuncs,Converter={StaticResource modetovis}}" VerticalAlignment="Top" ItemsSource="{Binding tolangs}" SelectedItem="{Binding SelectedItemto, Mode=TwoWay}" />
+                            <TextBlock Text="What you want to see:"></TextBlock>
+                            <ComboBox  PlaceholderText="To" HorizontalAlignment="Center"  VerticalAlignment="Top" ItemsSource="{Binding funcs}" SelectedItem="{Binding SelectedItemfuncs, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Icon="Delete" Label="Clear history!" Command="{Binding ClearCommand}"/>
+
+        </CommandBar>
+    </Page.TopAppBar>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="0"/>
+            <RowDefinition Height="Auto" MinHeight="0"/>
+            <RowDefinition Height="Auto" MinHeight="0"/>
+        </Grid.RowDefinitions>
+        <c:PageHeader Grid.Row="0"  Content="       
+                            Yandex Dictionary" FontSize="22" RequestedTheme="Default" Background="Orange" />
+        <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="10">
+            <TextBlock HorizontalAlignment="Center" Text="Your expression:"></TextBlock>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox HorizontalAlignment="Center" Text="{Binding Expression, Mode=TwoWay}" x:Name="inputbox"  VerticalAlignment="Top" Width="233" Height="32"/>
+                <Button Content="Word Magic!" Command="{Binding TranslateCommand}"></Button>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Vertical" Spacing="10">
+            <StackPanel Orientation="Horizontal" Spacing="5" Padding="0,20,0,10">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40,0,0,0" Text="Your query result:"></TextBlock>
+                <Button Content="Play" Command="{Binding SpeechCommand}" Visibility="{Binding SelectedItemto, Converter={StaticResource booltovis}}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="5" Padding="4,0,0,0" HorizontalAlignment="Center">
+                <StackPanel  BorderBrush="Black" BorderThickness="1">
+                    <StackPanel.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.3">
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="Orange" Offset="1"/>
+                        </LinearGradientBrush>
+                    </StackPanel.Background>
+                    <TextBlock Text="{Binding Result}" ScrollViewer.VerticalScrollMode="Auto" TextWrapping="Wrap" x:Name="resultbox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="310" Height="197" FocusVisualPrimaryBrush="Black"/>
+                </StackPanel>
+                <ListView HorizontalAlignment="Left" Height="197" VerticalAlignment="Top" Width="254" ItemsSource="{Binding history}"  >
+                    <ListView.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.3">
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="LightGray" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ListView.Background>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+
+        </StackPanel>
+
+
+    </Grid>
+</Page>
+
